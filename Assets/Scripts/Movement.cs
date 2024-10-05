@@ -25,6 +25,13 @@ public class Movement : MonoBehaviour
     public float wallSlidingSpeed = 0.9f;
     public float wallSlidingMultiplier = 1.4f;
 
+    private bool isWallJumping;
+    private float wallJumpingDirection;
+    public float wallJumpingTime = 0.2f;
+    private float wallJumperCounter;
+    public float wallJumpingDuration = 0.2f;
+    public Vector2 wallJumpingPower = new Vector2(12f, 16f);
+
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
@@ -60,7 +67,12 @@ public class Movement : MonoBehaviour
             isJumping = false;
         }*/
         WallSlide();
-        Flip();
+        WallJump();
+
+        if (!isWallJumping)
+        {
+            Flip();
+        }
     }
 
     private void FixedUpdate()
@@ -71,7 +83,10 @@ public class Movement : MonoBehaviour
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : decceleration;
         float movement = Mathf.Pow(Mathf.Abs(speedDiff) * accelRate, velPower) * Mathf.Sign(speedDiff);
 
-        rb.AddForce(movement *  Vector2.right);
+        
+        if (!isWallJumping) {
+            rb.AddForce(movement *  Vector2.right);
+        }
     }
 
     private bool IsGrounded()
@@ -107,6 +122,51 @@ public class Movement : MonoBehaviour
         isJumping = true;
         jumpInputRelease = false;
 
+    }
+
+    private void WallJump()
+    {   
+        
+        if (wallSliding)
+        {
+            isWallJumping = false;
+            wallJumpingDirection = -transform.localScale.x;
+            wallJumperCounter = wallJumpingTime;
+
+            CancelInvoke(nameof(StopWallJumping));
+        }
+        else
+        {
+            wallJumperCounter -= Time.deltaTime;
+        }
+
+        if (jumpInput && wallJumperCounter > 0f)
+        {
+            isWallJumping = true;
+            Vector2 force = new Vector2(wallJumpingPower.x, wallJumpingPower.y);
+            force.x *= wallJumpingDirection;
+
+            if (Mathf.Sign(rb.velocity.x) != Mathf.Sign(force.x))
+                force.x -= rb.velocity.x;
+
+            rb.AddForce(force, ForceMode2D.Impulse);
+            wallJumperCounter = 0f;
+
+            if (transform.localScale.x != wallJumpingDirection)
+            {
+                isFacingRight = !isFacingRight;
+                Vector3 localScale = transform.localScale;
+                localScale.x *= -1f;
+                transform.localScale = localScale;
+            }
+
+            Invoke(nameof(StopWallJumping), wallJumpingDuration);
+        }
+    }
+
+    private void StopWallJumping()
+    {
+        isWallJumping = false;
     }
 
     private void Flip()
