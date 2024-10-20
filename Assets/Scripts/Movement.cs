@@ -21,7 +21,7 @@ public class Movement : MonoBehaviour
     public float speed = 15f;
     public float jump = 25f;
     public float velPower = 1.1f;
-    public float acceleration = 15f;
+    public float acceleration = 4f;
     public float decceleration = 4f;
     public float jumpCutMultiplier = 0.5f;
     public float gravityScale = 5f;
@@ -194,6 +194,7 @@ public class Movement : MonoBehaviour
         leftKey = KeyCode.A;
         rightKey = KeyCode.D;
         jumpKey = KeyCode.Space;
+        speed = 15f;
         Retext();
 
         /*Vector2 force = new Vector2(hitPower.x, hitPower.y);
@@ -250,6 +251,11 @@ public class Movement : MonoBehaviour
             jumpKey = GenRandomKey();
         }
         Retext();
+    }
+
+    public void RandomSlow()
+    {
+        speed = Random.Range(5, 12);
     }
 
     private KeyCode GenRandomKey()

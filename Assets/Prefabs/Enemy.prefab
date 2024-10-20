@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6535079082747452971}
   - component: {fileID: 6920549115536488737}
   - component: {fileID: 5966633445279105013}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,7 +150,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0, g: 0.3121109, b: 1, a: 1}
   m_FlipX: 0
@@ -183,7 +183,6 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
-  player: {fileID: 0}
 --- !u!1 &3349144524720048743
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,7 +192,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6303678178133082053}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EGroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -225,7 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1967032439641060830}
   - component: {fileID: 7289745242312626855}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -308,7 +307,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2275375716003539144}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EPlayerCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}

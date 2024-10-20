@@ -6,6 +6,7 @@ public class Consumable : MonoBehaviour
 {
     [SerializeField] private LayerMask playerLayer;
     private Movement player;
+    public int type = 0;
 
     void Start()
     {
@@ -14,9 +15,14 @@ public class Consumable : MonoBehaviour
 
     void Update()
     {
+        transform.Rotate (new Vector3 (0, Time.deltaTime * 45, 0));
+
         if (TouchPlayer())
         {
-            player.RandomKey();
+            if (type == 0)
+                player.RandomKey();
+            if (type == 1)
+                player.RandomSlow();
             Destroy(gameObject);
         }    
     }
