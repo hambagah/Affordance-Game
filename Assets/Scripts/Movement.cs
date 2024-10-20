@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    private string[] keys = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "SPACE"}; 
+    private KeyCode[] keys2 = {KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E, KeyCode.F, KeyCode.G};
+    
+    private KeyCode leftKey = KeyCode.A;
+    private KeyCode rightKey = KeyCode.D;
+    private KeyCode jumpKey = KeyCode.Space;
+
+    private KeyCode prevLeftKey = KeyCode.A;
+    private KeyCode prevRightKey = KeyCode.D;
+
+
     private float horizontal;
     private bool jumpInput;
     private bool jumpReleased;
@@ -15,6 +26,9 @@ public class Movement : MonoBehaviour
     public float jumpCutMultiplier = 0.5f;
     public float gravityScale = 5f;
     public float fallGravityMultiplier = 1.4f;
+    public float pushStrength = 2f;
+    private bool stunned = false;
+    private float stunTime = 0f;
     /*public float frictionAmount = 1f;
     public float maxGravity = 1f;*/
 
@@ -32,6 +46,9 @@ public class Movement : MonoBehaviour
     public float wallJumpingDuration = 0.2f;
     public Vector2 wallJumpingPower = new Vector2(12f, 16f);
 
+    public Vector2 hitPower = new Vector2(25f, 10f);
+    public float hitMultiplier = 1.5f;
+
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
@@ -40,18 +57,16 @@ public class Movement : MonoBehaviour
     
     void Update()
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
-        jumpInput = Input.GetButtonDown("Jump");
-        jumpReleased = Input.GetButtonUp("Jump");
+        horizontal = (Input.GetKey(leftKey) ? -1 : 0) + (Input.GetKey(rightKey) ? 1 : 0);
+        jumpInput = Input.GetKeyDown(jumpKey);
+        jumpReleased = Input.GetKeyUp(jumpKey);
 
-        if (jumpInput && IsGrounded())
+        if (jumpInput && IsGrounded() && !stunned)
         {
-            //Jump();
             rb.AddForce(Vector2.up * jump, ForceMode2D.Impulse);
         }
 
         if (jumpReleased && rb.velocity.y > 0) {
-            //Debug.Log("TRUE");
             rb.AddForce(Vector2.down * rb.velocity.y * (1 - jumpCutMultiplier), ForceMode2D.Impulse);
         }
 
@@ -62,28 +77,33 @@ public class Movement : MonoBehaviour
             rb.gravityScale = gravityScale;
         }
 
-        /*if (Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer) && isJumping) 
-		{
-            isJumping = false;
-        }*/
+        //Debug.Log(stunTime + " " + Time.deltaTime);
+
+        if (stunned) 
+            stunTime += Time.deltaTime;
+
+        if (stunTime > 0.1f)
+            stunTime = 0f;
+            stunned = false;
+
         WallSlide();
         WallJump();
 
-        if (!isWallJumping)
+        if (!isWallJumping && !stunned)
         {
             Flip();
         }
+        
+        Debug.Log(leftKey + " " + rightKey + " " + jumpKey);
     }
 
     private void FixedUpdate()
     {
-        //X axis Movement
         float targetSpeed = horizontal * speed;
         float speedDiff = targetSpeed - rb.velocity.x;
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : decceleration;
         float movement = Mathf.Pow(Mathf.Abs(speedDiff) * accelRate, velPower) * Mathf.Sign(speedDiff);
 
-        
         if (!isWallJumping) {
             rb.AddForce(movement *  Vector2.right);
         }
@@ -168,6 +188,11 @@ public class Movement : MonoBehaviour
     {
         isWallJumping = false;
     }
+    
+    private void Stunned()
+    {
+        isWallJumping = true;
+    }
 
     private void Flip()
     {
@@ -178,5 +203,36 @@ public class Movement : MonoBehaviour
             localScale.x *= -1f;
             transform.localScale = localScale;
         }
+    }
+
+    public void Hit(float direction)
+    {
+        leftKey = KeyCode.A;
+        rightKey = KeyCode.D;
+        jumpKey = KeyCode.Space;
+
+        Vector2 force = new Vector2(hitPower.x, hitPower.y);
+        force.x *= direction;
+
+        if (Mathf.Sign(rb.velocity.x) != Mathf.Sign(force.x))
+            force.x -= rb.velocity.x;
+        
+        rb.AddForce(force, ForceMode2D.Impulse);
+        stunned = true;
+    }
+
+    public void RandomKey()
+    {
+        int random = Random.Range(0, 3);
+        if (random == 0) {
+            leftKey = keys2[Random.Range(0, keys2.Length)];
+        }
+        else if (random == 1) {
+            rightKey = keys2[Random.Range(0, keys2.Length)];
+        }
+        else if (random == 2) {
+            jumpKey = keys2[Random.Range(0, keys2.Length)];
+        }
+        Debug.Log(leftKey + " " + rightKey + " " + jumpKey);
     }
 }
