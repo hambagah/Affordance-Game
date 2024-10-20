@@ -16,12 +16,13 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Transform ePlayerCheck;
     [SerializeField] private LayerMask playerLayer;
 
-    [SerializeField] private Movement player;
+    private Movement player;
 
 
     void Start()
     {
         eRB = GetComponent<Rigidbody2D>();
+        player = GameObject.FindWithTag("Player").GetComponent<Movement>();
     }
 
     void Update()

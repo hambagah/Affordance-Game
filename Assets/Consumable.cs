@@ -5,7 +5,12 @@ using UnityEngine;
 public class Consumable : MonoBehaviour
 {
     [SerializeField] private LayerMask playerLayer;
-    [SerializeField] private Movement player;
+    private Movement player;
+
+    void Start()
+    {
+        player = GameObject.FindWithTag("Player").GetComponent<Movement>();
+    }
 
     void Update()
     {

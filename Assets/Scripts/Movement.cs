@@ -1,18 +1,18 @@
+using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    private string[] keys = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "SPACE"}; 
-    private KeyCode[] keys2 = {KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E, KeyCode.F, KeyCode.G};
+    private KeyCode[] keys2 = {KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I, KeyCode.J, KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O, KeyCode.P, KeyCode.Q, KeyCode.R, KeyCode.S, KeyCode.T, KeyCode.U, KeyCode.V, KeyCode.W, KeyCode.X, KeyCode.Y, KeyCode.Z, KeyCode.Space};
     
-    private KeyCode leftKey = KeyCode.A;
-    private KeyCode rightKey = KeyCode.D;
-    private KeyCode jumpKey = KeyCode.Space;
-
-    private KeyCode prevLeftKey = KeyCode.A;
-    private KeyCode prevRightKey = KeyCode.D;
+    public KeyCode leftKey = KeyCode.A;
+    public KeyCode rightKey = KeyCode.D;
+    public KeyCode jumpKey = KeyCode.Space;
+    [SerializeField] private TMP_Text leftText;
+    [SerializeField] private TMP_Text rightText;
+    [SerializeField] private TMP_Text jumpText;
 
 
     private float horizontal;
@@ -28,7 +28,7 @@ public class Movement : MonoBehaviour
     public float fallGravityMultiplier = 1.4f;
     public float pushStrength = 2f;
     private bool stunned = false;
-    private float stunTime = 0f;
+    public float stunTime = 0.75f;
     /*public float frictionAmount = 1f;
     public float maxGravity = 1f;*/
 
@@ -61,7 +61,7 @@ public class Movement : MonoBehaviour
         jumpInput = Input.GetKeyDown(jumpKey);
         jumpReleased = Input.GetKeyUp(jumpKey);
 
-        if (jumpInput && IsGrounded() && !stunned)
+        if (jumpInput && IsGrounded())
         {
             rb.AddForce(Vector2.up * jump, ForceMode2D.Impulse);
         }
@@ -77,24 +77,13 @@ public class Movement : MonoBehaviour
             rb.gravityScale = gravityScale;
         }
 
-        //Debug.Log(stunTime + " " + Time.deltaTime);
-
-        if (stunned) 
-            stunTime += Time.deltaTime;
-
-        if (stunTime > 0.1f)
-            stunTime = 0f;
-            stunned = false;
-
         WallSlide();
         WallJump();
 
-        if (!isWallJumping && !stunned)
+        if (!isWallJumping)
         {
             Flip();
         }
-        
-        Debug.Log(leftKey + " " + rightKey + " " + jumpKey);
     }
 
     private void FixedUpdate()
@@ -188,11 +177,6 @@ public class Movement : MonoBehaviour
     {
         isWallJumping = false;
     }
-    
-    private void Stunned()
-    {
-        isWallJumping = true;
-    }
 
     private void Flip()
     {
@@ -210,29 +194,78 @@ public class Movement : MonoBehaviour
         leftKey = KeyCode.A;
         rightKey = KeyCode.D;
         jumpKey = KeyCode.Space;
+        Retext();
 
-        Vector2 force = new Vector2(hitPower.x, hitPower.y);
+        /*Vector2 force = new Vector2(hitPower.x, hitPower.y);
         force.x *= direction;
 
         if (Mathf.Sign(rb.velocity.x) != Mathf.Sign(force.x))
             force.x -= rb.velocity.x;
         
-        rb.AddForce(force, ForceMode2D.Impulse);
+        rb.AddForce(force, ForceMode2D.Impulse);*/
         stunned = true;
+        //
+        //
+        //
+        if (stunned)
+        {
+            isWallJumping = false;
+            wallJumperCounter = wallJumpingTime;
+
+            CancelInvoke(nameof(StopWallJumping));
+        }
+        else
+        {
+            wallJumperCounter -= Time.deltaTime;
+        }
+
+        if (wallJumperCounter > 0f)
+        {
+            isWallJumping = true;
+            Vector2 force = new Vector2(hitPower.x, hitPower.y);
+            force.x *= direction;
+
+            if (Mathf.Sign(rb.velocity.x) != Mathf.Sign(force.x))
+                force.x -= rb.velocity.x;
+
+            rb.AddForce(force, ForceMode2D.Impulse);
+            wallJumperCounter = 0f;
+            Invoke(nameof(StopWallJumping), stunTime);
+        }
     }
 
     public void RandomKey()
     {
         int random = Random.Range(0, 3);
         if (random == 0) {
-            leftKey = keys2[Random.Range(0, keys2.Length)];
+            //leftKey = keys2[Random.Range(0, keys2.Length)];
+            leftKey = GenRandomKey();
         }
         else if (random == 1) {
-            rightKey = keys2[Random.Range(0, keys2.Length)];
+            //rightKey = keys2[Random.Range(0, keys2.Length)];
+            rightKey = GenRandomKey();
         }
         else if (random == 2) {
-            jumpKey = keys2[Random.Range(0, keys2.Length)];
+            //jumpKey = keys2[Random.Range(0, keys2.Length)];
+            jumpKey = GenRandomKey();
         }
-        Debug.Log(leftKey + " " + rightKey + " " + jumpKey);
+        Retext();
+    }
+
+    private KeyCode GenRandomKey()
+    {
+        KeyCode newKey;
+        do
+        {
+            newKey = keys2[Random.Range(0, keys2.Length-1)];
+        } while (newKey == leftKey && newKey == rightKey && newKey == jumpKey);
+        return newKey;
+    }
+
+    private void Retext()
+    {
+        leftText.text = leftKey.ToString();
+        rightText.text = rightKey.ToString();
+        jumpText.text = jumpKey.ToString();
     }
 }
