@@ -6,7 +6,6 @@ public class Enemy : MonoBehaviour
 {
 
     public float eSpeed = 3f;
-    private float idle;
     private float pastSpeed = 3f;
     private float moveDelay;
     private float attackDelay = 0.4f;
