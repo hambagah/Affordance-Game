@@ -6,13 +6,14 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     private KeyCode[] keys2 = {KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.I, KeyCode.J, KeyCode.K, KeyCode.L, KeyCode.M, KeyCode.N, KeyCode.O, KeyCode.P, KeyCode.Q, KeyCode.R, KeyCode.S, KeyCode.T, KeyCode.U, KeyCode.V, KeyCode.W, KeyCode.X, KeyCode.Y, KeyCode.Z, KeyCode.Space};
-    
+    public Animator animator;
+
     public KeyCode leftKey = KeyCode.A;
     public KeyCode rightKey = KeyCode.D;
     public KeyCode jumpKey = KeyCode.Space;
-    [SerializeField] private TMP_Text leftText;
-    [SerializeField] private TMP_Text rightText;
-    [SerializeField] private TMP_Text jumpText;
+    private TMP_Text leftText;
+    private TMP_Text rightText;
+    private TMP_Text jumpText;
 
 
     private float horizontal;
@@ -29,8 +30,6 @@ public class Movement : MonoBehaviour
     public float pushStrength = 2f;
     private bool stunned = false;
     public float stunTime = 0.75f;
-    /*public float frictionAmount = 1f;
-    public float maxGravity = 1f;*/
 
     private bool isJumping = false;
     private bool jumpInputRelease = false;
@@ -38,6 +37,7 @@ public class Movement : MonoBehaviour
     private bool wallSliding;
     public float wallSlidingSpeed = 0.9f;
     public float wallSlidingMultiplier = 1.4f;
+    public float yvelo;
 
     private bool isWallJumping;
     private float wallJumpingDirection;
@@ -55,9 +55,28 @@ public class Movement : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
     
+    void Start()
+    {
+        leftText = GameObject.Find("LeftText").GetComponent<TMP_Text>();
+        rightText = GameObject.Find("RightText").GetComponent<TMP_Text>();
+        jumpText = GameObject.Find("JumpText").GetComponent<TMP_Text>();
+    }
+
     void Update()
     {
         horizontal = (Input.GetKey(leftKey) ? -1 : 0) + (Input.GetKey(rightKey) ? 1 : 0);
+
+        animator.SetFloat("Speed", Mathf.Abs(horizontal));
+
+        if (IsGrounded() && !wallSliding)
+            animator.SetBool("IsJumping", false);
+        else 
+            animator.SetBool("IsJumping", true);
+            animator.SetFloat("Yspeed",  rb.velocity.y);
+
+
+        yvelo = rb.velocity.y;
+
         jumpInput = Input.GetKeyDown(jumpKey);
         jumpReleased = Input.GetKeyUp(jumpKey);
 
@@ -113,6 +132,7 @@ public class Movement : MonoBehaviour
         if (IsWalled() && !IsGrounded() && horizontal != 0f)
         {
             wallSliding = true;
+            animator.SetBool("Sliding", true);
             float speedDif = wallSlidingSpeed - rb.velocity.y;	
             float movement = speedDif * wallSlidingMultiplier;
             movement = Mathf.Clamp(movement, -Mathf.Abs(speedDif)  * (1 / Time.fixedDeltaTime), Mathf.Abs(speedDif) * (1 / Time.fixedDeltaTime));
@@ -122,6 +142,7 @@ public class Movement : MonoBehaviour
         else
         {
             wallSliding = false;
+            animator.SetBool("Sliding", false);
         }
     }
 
@@ -176,6 +197,7 @@ public class Movement : MonoBehaviour
     private void StopWallJumping()
     {
         isWallJumping = false;
+        animator.SetBool("Stunned", false);
     }
 
     private void Flip()
@@ -197,28 +219,14 @@ public class Movement : MonoBehaviour
         speed = 15f;
         Retext();
 
-        /*Vector2 force = new Vector2(hitPower.x, hitPower.y);
-        force.x *= direction;
+        isWallJumping = false;
+        wallJumperCounter = wallJumpingTime;
 
-        if (Mathf.Sign(rb.velocity.x) != Mathf.Sign(force.x))
-            force.x -= rb.velocity.x;
+        CancelInvoke(nameof(StopWallJumping));
+        animator.SetBool("Stunned", true);
         
-        rb.AddForce(force, ForceMode2D.Impulse);*/
-        stunned = true;
-        //
-        //
-        //
-        if (stunned)
-        {
-            isWallJumping = false;
-            wallJumperCounter = wallJumpingTime;
-
-            CancelInvoke(nameof(StopWallJumping));
-        }
-        else
-        {
-            wallJumperCounter -= Time.deltaTime;
-        }
+        wallJumperCounter -= Time.deltaTime;
+        
 
         if (wallJumperCounter > 0f)
         {
@@ -264,7 +272,7 @@ public class Movement : MonoBehaviour
         do
         {
             newKey = keys2[Random.Range(0, keys2.Length-1)];
-        } while (newKey == leftKey && newKey == rightKey && newKey == jumpKey);
+        } while (newKey == leftKey || newKey == rightKey || newKey == jumpKey);
         return newKey;
     }
 
