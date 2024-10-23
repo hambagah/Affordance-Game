@@ -58,8 +58,8 @@ MonoBehaviour:
   speed: 15
   jump: 25
   velPower: 1.1
-  acceleration: 15
-  decceleration: 4
+  acceleration: 8
+  decceleration: 15
   jumpCutMultiplier: 0.5
   gravityScale: 5
   fallGravityMultiplier: 1.4

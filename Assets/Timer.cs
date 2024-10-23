@@ -9,7 +9,7 @@ public class Timer : MonoBehaviour {
 
     public TMP_Text timerText;
     bool finished = false;
-    string seconds;
+    private float seconds;
     private float t;
     public float stageTime = 90f;
     public GameOver GameOverScreen;
@@ -25,9 +25,10 @@ public class Timer : MonoBehaviour {
         t += Time.deltaTime;
         if (!finished)
         {
-            seconds = (t % 60).ToString("f0");
+            seconds = (t % 60);
+            
 
-            timerText.text = seconds;
+            timerText.text = (stageTime-seconds).ToString("f0");
         }
         if (t >= stageTime)
         {
