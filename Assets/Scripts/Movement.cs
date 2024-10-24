@@ -54,12 +54,19 @@ public class Movement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
+
+    
+    public AudioClip hit;
+    public AudioClip jumpSound;
+    public AudioClip pickup;
+    AudioSource audio;
     
     void Start()
     {
         leftText = GameObject.Find("LeftText").GetComponent<TMP_Text>();
         rightText = GameObject.Find("RightText").GetComponent<TMP_Text>();
         jumpText = GameObject.Find("JumpText").GetComponent<TMP_Text>();
+        audio = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -83,6 +90,8 @@ public class Movement : MonoBehaviour
         if (jumpInput && IsGrounded())
         {
             rb.AddForce(Vector2.up * jump, ForceMode2D.Impulse);
+            audio.clip = jumpSound;
+            audio.Play();
         }
 
         if (jumpReleased && rb.velocity.y > 0) {
@@ -172,6 +181,8 @@ public class Movement : MonoBehaviour
 
         if (jumpInput && wallJumperCounter > 0f)
         {
+            audio.clip = jumpSound;
+            audio.Play();
             isWallJumping = true;
             Vector2 force = new Vector2(wallJumpingPower.x, wallJumpingPower.y);
             force.x *= wallJumpingDirection;
@@ -218,6 +229,8 @@ public class Movement : MonoBehaviour
         jumpKey = KeyCode.Space;
         speed = 15f;
         Retext();
+        audio.clip = hit;
+        audio.Play();
 
         isWallJumping = false;
         wallJumperCounter = wallJumpingTime;
@@ -258,12 +271,16 @@ public class Movement : MonoBehaviour
             //jumpKey = keys2[Random.Range(0, keys2.Length)];
             jumpKey = GenRandomKey();
         }
+        audio.clip = pickup;
+        audio.Play();
         Retext();
     }
 
     public void RandomSlow()
     {
         speed = Random.Range(5, 12);
+        audio.clip = pickup;
+        audio.Play();
     }
 
     private KeyCode GenRandomKey()
