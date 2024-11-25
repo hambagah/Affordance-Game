@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4158442717774305296}
   - component: {fileID: 6972484088733221634}
   - component: {fileID: 2931645777140379280}
-  - component: {fileID: 4100882036204605360}
+  - component: {fileID: 5706236094544263154}
   m_Layer: 0
   m_Name: Carrot
   m_TagString: Untagged
@@ -60,7 +60,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &6972484088733221634
 BoxCollider2D:
@@ -159,7 +159,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4100882036204605360
+--- !u!114 &5706236094544263154
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,4 +174,4 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
-  type: 0
+  type: 1
