@@ -8,14 +8,18 @@ public class CarrotSpawner : MonoBehaviour
     public float respawnDelay = 3f; // Delay before spawning a new carrot
 
     private GameObject currentCarrot; // Reference to the currently spawned carrot
+    private float timer;
 
     private void Update()
     {
         // Check if the carrot is missing
         if (currentCarrot == null)
         {
-            // Start respawning process
-            Invoke(nameof(SpawnCarrot), respawnDelay);
+            timer+=Time.deltaTime;
+        }
+        if (timer > respawnDelay)
+        {
+            SpawnCarrot();
         }
     }
 
@@ -26,6 +30,7 @@ public class CarrotSpawner : MonoBehaviour
 
         // Instantiate a new carrot
         currentCarrot = Instantiate(carrotPrefab, transform.position, Quaternion.identity);
+        timer = 0;
     }
 }
 
