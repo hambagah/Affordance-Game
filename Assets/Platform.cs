@@ -21,6 +21,7 @@ public class Platform : MonoBehaviour
         if (Vector2.Distance(transform.position, points[i].position) < 0.05f)
         {
             i++;
+            Debug.Log("HELLO");
             if (i == points.Length)
             {
                 i = 0;
