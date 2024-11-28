@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aeee653f1073e549b65444b6240f4c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carrotPrefab: {fileID: 1673735787315731990, guid: fe87b3cb377cd20468a3135b25aa9c18, type: 3}
-  spawnInterval: 4
+  carrotPrefab: {fileID: 8185506671248984541, guid: d8ea2be527902794895a3cfc4c55903a, type: 3}
+  respawnDelay: 3
