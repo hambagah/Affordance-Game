@@ -34747,7 +34747,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &780088996
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34781,7 +34781,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerText: {fileID: 1650584877}
-  stageTime: 90
+  stageTime: 5868846
   GameOverScreen: {fileID: 300893147}
 --- !u!114 &780088998
 MonoBehaviour:
