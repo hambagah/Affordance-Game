@@ -57,7 +57,7 @@ MonoBehaviour:
   rightKey: 100
   jumpKey: 32
   speed: 15
-  jump: 25
+  jump: 35
   velPower: 1.1
   acceleration: 8
   decceleration: 15
@@ -66,12 +66,12 @@ MonoBehaviour:
   fallGravityMultiplier: 1.4
   pushStrength: 2
   stunTime: 0.75
-  wallSlidingSpeed: 3
-  wallSlidingMultiplier: 5
+  wallSlidingSpeed: 2
+  wallSlidingMultiplier: 4
   yvelo: 0
   wallJumpingTime: 0.2
   wallJumpingDuration: 0.15
-  wallJumpingPower: {x: 15, y: 25}
+  wallJumpingPower: {x: 15, y: 45}
   hitPower: {x: 35, y: 10}
   hitMultiplier: 1.5
   rb: {fileID: 6789831000299293291}
@@ -198,7 +198,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 4
   m_Sprite: {fileID: -2128966994, guid: ab55a7e136247eb4691790c900c6c4fd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
