@@ -15,14 +15,14 @@ public class Consumable : MonoBehaviour
 
     void Update()
     {
-        transform.Rotate (new Vector3 (0, Time.deltaTime * 45, 0));
 
         if (TouchPlayer())
         {
             if (type == 0)
                 player.RandomKey();
+                transform.Rotate (new Vector3 (0, Time.deltaTime * 45, 0));
             if (type == 1)
-                player.RandomSlow();
+                player.RandomKey();
             Destroy(gameObject);
         }    
     }
