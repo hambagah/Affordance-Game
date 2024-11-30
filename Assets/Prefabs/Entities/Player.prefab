@@ -57,7 +57,7 @@ MonoBehaviour:
   rightKey: 100
   jumpKey: 32
   speed: 15
-  jump: 35
+  jump: 38
   velPower: 1.1
   acceleration: 8
   decceleration: 15

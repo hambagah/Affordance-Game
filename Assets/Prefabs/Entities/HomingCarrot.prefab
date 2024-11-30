@@ -31,8 +31,8 @@ Transform:
   m_GameObject: {fileID: 2978935282703784351}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.113941, y: -1.5415872, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: -1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   rotationSpeed: 200
-  detectionRadius: 5
+  detectionRadius: 7
   arcFactor: 1
 --- !u!95 &8109840245408437787
 Animator:
@@ -213,4 +213,4 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
-  type: 0
+  type: 1

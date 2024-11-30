@@ -6,27 +6,30 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Menu.unity
+    path: Assets/Used Scenes/Menu.unity
     guid: 4a67cd9138f1d9d48818c49ff2474879
-  - enabled: 0
-    path: Assets/Scenes/Cutscene.unity
-    guid: f8f5c31a348b6ff49974cdc817525560
   - enabled: 1
-    path: Assets/Scenes/Stage1.unity
-    guid: a3544b0e4aa86f34a90ef8829e1b725f
+    path: Assets/Used Scenes/Stage1V2.unity
+    guid: 54ec85d48db5a8b43873915ffff00fbe
   - enabled: 1
-    path: Assets/Scenes/Stage2.unity
-    guid: cbcc34f982c350444b274af113d20e02
+    path: Assets/Used Scenes/Stage2V2.unity
+    guid: 2bb42b43c46923347b38257dc2d7333a
   - enabled: 1
-    path: Assets/Scenes/Stage3.unity
-    guid: 945d16f62428cdc488cf663d5f86f49a
+    path: Assets/Used Scenes/Stage3V2.unity
+    guid: 97899e6e36b23c747ae554351069df0a
   - enabled: 1
-    path: Assets/Scenes/Stage4.unity
-    guid: 0d25deb46f258d4468088174ad6fb58b
+    path: Assets/Used Scenes/Stage4V2.unity
+    guid: 19eb81b118e2fa140bd52be4937e3be9
   - enabled: 1
-    path: Assets/Scenes/Stage5.unity
-    guid: f19325b09688c074a9933089685225d6
+    path: Assets/Used Scenes/Stage5V2.unity
+    guid: 49c161d339bf32c46a8f6323e6a2f5e2
   - enabled: 1
-    path: Assets/Scenes/Level9.unity
-    guid: 54424eba8bf29b148b5a1a8c9f47846d
+    path: Assets/Used Scenes/Stage6V2.unity
+    guid: 25b9ff6b699fa194cbd29780681c99c5
+  - enabled: 1
+    path: Assets/Used Scenes/Stage7V2.unity
+    guid: 05ecac8ad1664aa4abf14686a0a6a6fa
+  - enabled: 1
+    path: Assets/Used Scenes/Final.unity
+    guid: 9cd115be81505ec4ca01af42b270d2f1
   m_configObjects: {}
